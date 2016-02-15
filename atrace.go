@@ -188,8 +188,9 @@ func EventCallback(ae *audit.AuditEvent, ce chan error, args ...interface{}) {
 	}
 
 	scRes := syscallinfo.NewResolver(linux_amd64.SyscallTable)
-	str,_ := scRes.Repr(syscallid, uint64(exit), uint64(a0), uint64(a1), uint64(a2), uint64(a3), uint64(a4), uint64(a5))
-
+	sc, _ := scRes.SyscallN(syscallid)
+	scc, _ := syscallinfo.NewSyscallCall(sc, exit, a0, a1, a2, a3, a4, a5)
+	fmt.Printf("[%d] %s\n", pid, scc)
 	fmt.Printf("[%d] %s\n", pid, str)
 	os.Stdout.Sync()
 }
